@@ -1,0 +1,35 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: ${{ matrix.os }} · node ${{ matrix.node }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      # 测试文件里会起本地 mock server / 绑端口，串行跑避免端口互撞
+      - name: unit tests
+        run: node --test --test-concurrency=1 test/
+
+      # 三个可复现指标（不依赖显卡，任何机器都应跑出接近的数）
+      - name: benchmarks
+        run: node scripts/bench.mjs
+
+      # 工具验证台账只做报告，不做门禁（严格模式留给本地发布前）
+      - name: tool verification report
+        run: node scripts/verify-tools.mjs
+        continue-on-error: true

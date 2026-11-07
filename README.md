@@ -1,5 +1,12 @@
 # dsh-local-orchestrator
 
+[![test](https://github.com/metagalaxy-crystal/dsh-local-orchestrator/actions/workflows/test.yml/badge.svg)](https://github.com/metagalaxy-crystal/dsh-local-orchestrator/actions/workflows/test.yml)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![node](https://img.shields.io/badge/node-%3E%3D20-brightgreen.svg)](package.json)
+[![release](https://img.shields.io/github/v/release/metagalaxy-crystal/dsh-local-orchestrator)](https://github.com/metagalaxy-crystal/dsh-local-orchestrator/releases)
+
+**简体中文** · [English](README.en.md)
+
 **单卡消费级设备上、给 agent 用的资源调度运行时**：把 LLM、生成式工作流、一次性脚本统一进一张预算表，
 用「单步工具 + 任务状态机」把决策权和执行权分开，支持跨会话任务的暂停与唤醒。
 
@@ -98,6 +105,21 @@ DSH 会话模型（DeepSeek / 自定义）
   用 `schedule` 唤醒**任务所属会话**，不广播、不打扰别的会话。
 
 > 三张图：[双环调度总览](docs/flow-v2.png)（一张图看全流程） · [架构总览](docs/architecture-v2.png) · [双循环与三种协作形态](docs/loops-v2.png)。
+
+### 界面
+
+Web 端有一个「本地调度」页签，五个子页：总览 / 任务池 / 任务 / 输入输出 / 用量 / 资产 / 设置。
+
+<!-- 截图放好后把下面这段取消注释（文件命名见 docs/screenshots/README.md）
+<p align="center">
+  <img src="docs/screenshots/01-overview.png" width="49%" alt="总览：显存三段条与资产网格" />
+  <img src="docs/screenshots/02-assets.png" width="49%" alt="资产：运行框架条与配套组件" />
+</p>
+<p align="center">
+  <img src="docs/screenshots/03-tasks.png" width="49%" alt="任务池：步骤树与租约" />
+  <img src="docs/screenshots/04-usage.png" width="49%" alt="用量：token 消耗与上下文占用" />
+</p>
+-->
 
 **调度策略**（默认针对 8GB 显存调优）：
 

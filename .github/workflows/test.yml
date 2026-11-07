@@ -21,9 +21,18 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      # 测试文件里会起本地 mock server / 绑端口，串行跑避免端口互撞
+      # 测试文件里会起本地 mock server / 绑端口，串行跑避免端口互撞。
+      # 用 bash 显式循环：Windows runner 默认 pwsh 不会展开 test/*.test.js，
+      # 而 node 20 的 `node --test <dir>` 在各版本行为不一致。
       - name: unit tests
-        run: node --test --test-concurrency=1 test/
+        shell: bash
+        run: |
+          set -e
+          for f in test/*.test.js; do
+            echo "::group::$f"
+            node "$f"
+            echo "::endgroup::"
+          done
 
       # 三个可复现指标（不依赖显卡，任何机器都应跑出接近的数）
       - name: benchmarks

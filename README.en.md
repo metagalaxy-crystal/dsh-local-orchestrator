@@ -15,6 +15,17 @@ and measured on `RTX 5060 Laptop 8GB / 32GB RAM`, Windows.
 
 📖 Full design and measured numbers (Chinese): [docs/OVERVIEW.md](docs/OVERVIEW.md)
 
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/01-overview.png" width="49%" alt="Overview: three-segment VRAM bar and asset grid" />
+  <img src="docs/screenshots/02-assets.png" width="49%" alt="Assets: framework strip and per-model components" />
+</p>
+<p align="center">
+  <img src="docs/screenshots/03-tasks.png" width="49%" alt="Tasks: per-run node graph" />
+  <img src="docs/screenshots/04-usage.png" width="49%" alt="Usage: token ledger and context usage" />
+</p>
+
 ## What it solves
 
 | Pain | Without a scheduler | With this plugin |

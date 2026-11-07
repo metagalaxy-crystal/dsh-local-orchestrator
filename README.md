@@ -108,9 +108,8 @@ DSH 会话模型（DeepSeek / 自定义）
 
 ### 界面
 
-Web 端有一个「本地调度」页签，五个子页：总览 / 任务池 / 任务 / 输入输出 / 用量 / 资产 / 设置。
+Web 端有一个「本地调度」页签，七个子页：总览 / 任务池 / 任务 / 输入输出 / 用量 / 资产 / 设置。
 
-<!-- 截图放好后把下面这段取消注释（文件命名见 docs/screenshots/README.md）
 <p align="center">
   <img src="docs/screenshots/01-overview.png" width="49%" alt="总览：显存三段条与资产网格" />
   <img src="docs/screenshots/02-assets.png" width="49%" alt="资产：运行框架条与配套组件" />
@@ -119,7 +118,11 @@ Web 端有一个「本地调度」页签，五个子页：总览 / 任务池 / �
   <img src="docs/screenshots/03-tasks.png" width="49%" alt="任务池：步骤树与租约" />
   <img src="docs/screenshots/04-usage.png" width="49%" alt="用量：token 消耗与上下文占用" />
 </p>
--->
+
+左上：**总览**——显存卡分三段（已用 / 可调度 / 保留），下面每张资产卡直接给加载/固定/禁用。
+右上：**资产**——顶部运行框架条，主模型卡片里挂配套组件（视觉投影 / 编码器 / VAE），缺文件的标红。
+左下：**任务**——每个 run 一张框图，节点带耗时；失败任务标红并写明原因。
+右下：**用量**——24h 调用次数、tokens、tok/s、上下文占用，以及按资产的 token 分布。
 
 **调度策略**（默认针对 8GB 显存调优）：
 

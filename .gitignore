@@ -1,0 +1,18 @@
+# 运行期产物
+*.log
+*.tmp
+bench/bench-*.json
+docs/tts-smoke.*
+docs/verify-*.png
+docs/_design_dump.txt
+
+# 客户端 bundle 合并/提取的中间产物（开发工具用，不入库）
+merged/
+merged-src/
+*.asar
+
+# 依赖与系统文件
+node_modules/
+.DS_Store
+Thumbs.db
+desktop.ini

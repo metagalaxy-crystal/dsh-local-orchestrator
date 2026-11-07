@@ -1,0 +1,7 @@
+# dsh-local-orchestrator 的 bundle patch：把插件主行插入 profile 的插件清单。
+# 安装：dsh plugin --profile <name> add <本目录或 git 地址>
+# 宿主插件由 lib/index.js 提供（apply / inject / name），无浏览器端代码。
+# 不要再在 profile 的 cordis.patch.yml 里重复插入同一 id（重复 id 会让 loader 崩溃）。
+- insert:
+    - id: dsh-local-orchestrator
+      name: 'dsh-local-orchestrator'

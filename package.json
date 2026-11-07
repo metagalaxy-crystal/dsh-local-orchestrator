@@ -1,0 +1,57 @@
+{
+  "name": "dsh-local-orchestrator",
+  "version": "0.13.1",
+  "description": "单卡消费级设备上、给 agent 用的资源调度运行时：把 LLM / 生成式工作流 / 一次性脚本统一进一张预算表，用「单步工具 + 任务状态机」分离决策权与执行权，支持跨会话任务的暂停与唤醒。",
+  "private": false,
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "docs/OVERVIEW.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test test/",
+    "bench": "node scripts/bench.mjs",
+    "verify": "node scripts/verify-tools.mjs",
+    "verify:strict": "node scripts/verify-tools.mjs --strict"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-runtime"
+      ],
+      "platform": "web"
+    }
+  },
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "llama.cpp",
+    "comfyui",
+    "resource-scheduler",
+    "local-models"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/metagalaxy-crystal/dsh-local-orchestrator.git"
+  },
+  "homepage": "https://github.com/metagalaxy-crystal/dsh-local-orchestrator#readme",
+  "bugs": {
+    "url": "https://github.com/metagalaxy-crystal/dsh-local-orchestrator/issues"
+  }
+}

@@ -48,10 +48,14 @@ and measured on `RTX 5060 Laptop 8GB / 32GB RAM`, Windows.
 > Decision authority stays in the host, execution authority lives in the plugin, and the task state is
 > the only contract between them.
 
-## Nine tools
+## Ten tools
 
 `local_resources` · `local_assets` · `local_chat` · `local_service` · `local_delegate` ·
-`local_generate` · `local_audio` · `local_task` · `local_step`
+`local_generate` · `local_audio` · `local_task` · `local_step` · `local_env`
+
+`local_env` keeps the runtime portable: `doctor` reports every environment problem as one actionable
+fix, `vendor-llama` copies llama.cpp into the plugin, `link-comfy` records where ComfyUI lives, and
+`set-model-root` points at your model directory. Model files are never moved.
 
 Assets are *resources* addressed by an `asset` parameter and picked by the scheduler (VRAM fit, strengths,
 already loaded). Not one-tool-per-model: tool schemas go into context every turn.

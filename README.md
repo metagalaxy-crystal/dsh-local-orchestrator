@@ -17,7 +17,7 @@
 > 已经用 llama.cpp 跑 GGUF、用 ComfyUI 出图/视频，希望 agent 能按任务自动加载/卸载，
 > 把简单、批量、隐私、离线的活交给本地算力。
 
-📄 **第一次来先看这里：[docs/OVERVIEW.md](docs/OVERVIEW.md)** —— 它解决哪些具体痛点、九个工具能做什么、
+📄 **第一次来先看这里：[docs/OVERVIEW.md](docs/OVERVIEW.md)** —— 它解决哪些具体痛点、十个工具能做什么、
 实测数字、适用/不适用、局限、快速开始。本 README 是完整参考手册。
 
 ```bash
@@ -66,9 +66,9 @@ DSH 会话模型（DeepSeek / 自定义）
         │  工具调用
         ▼
 ┌───────────────────────────────────────────────┐
-│ lib/tools.js   9 个工具（resources/assets/     │
+│ lib/tools.js  10 个工具（resources/assets/     │
 │                chat/service/delegate/generate/ │
-│                audio/task/step）               │
+│                audio/task/step/env）           │
 ├───────────────────────────────────────────────┤
 │ lib/tasks.js   任务池：Task/Step 状态机、       │
 │                按会话隔离、持久化、断点恢复    │
@@ -278,6 +278,25 @@ UI 只提供两种（`config.decision.mode` 仍保留底层四值以兼容老配
 | `local_audio` | 一次性音频脚本：`tts` 语音合成 / `asr` 转写+分离+SRT / `music-qc` 音乐质检 |
 | `local_task` | 任务池：`create/list/get/pause/resume/cancel/rollback/replan`；任务按会话隔离、落盘可恢复 |
 | `local_step` | 推进任务一步：`run/retry/skip/inspect`；**一次调用只做一步**，失败自动重试一次 |
+| `local_env` | 便携运行时：`doctor` 环境体检（每项带一条 fix）、`plan` 还差什么、`vendor-llama` 把 llama.cpp 复制进插件、`link-comfy` 登记 ComfyUI 路径、`set-model-root` 改模型目录 |
+
+### 便携运行时（下载即用）
+
+环境问题不该让人（和模型）去读日志猜。插件把能收的都收进自己的 `runtime/`：
+
+- `runtime/llama/`：llama-server + 依赖 DLL（约 77MB，MIT），**复制**进来后不再依赖系统安装；
+- `runtime/comfy.json`：ComfyUI 目录的**指针**（源码 200MB 不复制，只记路径）；
+- `runtime/py/`：可选 venv；torch 约 2.5GB，按需装（打包等于赌用户的 CUDA 版本）；
+- 模型**永远不搬**，只登记路径。
+
+```jsonc
+{"action":"doctor"}                                    // 逐项 ok / ! / x + fix
+{"action":"vendor-llama"}                              // 有现成 llama.cpp 就复制进来
+{"action":"link-comfy","dir":"D:\\models\\ComfyUI"}
+{"action":"set-model-root","dir":"D:\\models\\models"}
+```
+
+细节与取舍：[docs/PORTABLE.md](docs/PORTABLE.md)。
 
 ### 任务池怎么用
 

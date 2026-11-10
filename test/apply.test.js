@@ -47,14 +47,14 @@ function fakeCtx() {
   return ctx
 }
 
-test('apply：注册 9 个工具、一个系统提示段，并注入 fleet 简报', async () => {
+test('apply：注册 10 个工具、一个系统提示段，并注入 fleet 简报', async () => {
   const dataDir = await fsp.mkdtemp(path.join(os.tmpdir(), 'dsh-lo-apply-'))
   const ctx = fakeCtx()
   const dispose = apply(ctx, { dataDir, prompt: { enabled: true } })
 
   assert.equal(name, 'dsh-local-orchestrator')
   assert.deepEqual([...inject], ['tools', 'systemPrompt'])
-  assert.equal(ctx.registered.length, 9)
+  assert.equal(ctx.registered.length, 10)
   assert.deepEqual(
     ctx.registered.map((tool) => tool.name).sort(),
     [
@@ -62,6 +62,7 @@ test('apply：注册 9 个工具、一个系统提示段，并注入 fleet 简�
       'local_audio',
       'local_chat',
       'local_delegate',
+      'local_env',
       'local_generate',
       'local_resources',
       'local_service',

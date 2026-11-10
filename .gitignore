@@ -11,6 +11,9 @@ merged/
 merged-src/
 *.asar
 
+# 便携运行时（llama.cpp 副本 / python venv / comfy 指针）：体积大，按机器生成
+runtime/
+
 # 依赖与系统文件
 node_modules/
 .DS_Store

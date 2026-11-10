@@ -1,6 +1,6 @@
 {
   "name": "dsh-local-orchestrator",
-  "version": "0.13.1",
+  "version": "0.14.0",
   "description": "单卡消费级设备上、给 agent 用的资源调度运行时：把 LLM / 生成式工作流 / 一次性脚本统一进一张预算表，用「单步工具 + 任务状态机」分离决策权与执行权，支持跨会话任务的暂停与唤醒。",
   "private": false,
   "type": "module",
@@ -15,6 +15,7 @@
     "cordis.patch.yml",
     "README.md",
     "docs/OVERVIEW.md",
+    "docs/PORTABLE.md",
     "LICENSE"
   ],
   "engines": {
@@ -24,7 +25,8 @@
     "test": "node --test test/",
     "bench": "node scripts/bench.mjs",
     "verify": "node scripts/verify-tools.mjs",
-    "verify:strict": "node scripts/verify-tools.mjs --strict"
+    "verify:strict": "node scripts/verify-tools.mjs --strict",
+    "setup": "node scripts/setup-runtime.mjs"
   },
   "dsh": {
     "bundle": {

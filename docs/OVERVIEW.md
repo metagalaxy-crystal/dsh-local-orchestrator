@@ -47,7 +47,7 @@
 
 ---
 
-## 九个工具（给会话模型用）
+## 十个工具（给会话模型用）
 
 | 工具 | 能力 |
 |---|---|
@@ -60,6 +60,7 @@
 | `local_audio` | 一次性音频脚本：`tts` 语音合成 / `asr` 转写+分离+SRT / `music-qc` 质检 |
 | `local_task` | 任务池：`create / list / get / pause / resume / cancel / rollback / replan` |
 | `local_step` | 推进任务一步：`run / retry / skip / inspect`；**一次调用只做一步**，失败自动重试一次 |
+| `local_env` | 便携运行时：`doctor` 体检（每项带 fix）/ `plan` / `vendor-llama` 复制 llama.cpp / `link-comfy` 登记 ComfyUI / `set-model-root` |
 
 工具是**能力原语**，模型是**资源**（用 `asset` 参数寻址，由调度器按显存/擅长/已加载挑选）。
 不采用「一模型一 tool」：工具 schema 每轮进上下文，几十个资产会把工具列表撑爆，而且模型算不了显存预算。

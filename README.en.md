@@ -75,26 +75,76 @@ node scripts/bench.mjs
 Measured on the reference machine: 3B model cold start 39.8–45.4 s, 512×512 image 44.8 s,
 4.8 s TTS audio 19.9 s (RTF 4.15).
 
-## Quick start
+## Usage (five minutes)
+
+### 1. Install
 
 ```bash
 git clone https://github.com/metagalaxy-crystal/dsh-local-orchestrator.git
-dsh plugin add ./dsh-local-orchestrator   # adjust to your DSH version
+cd dsh-local-orchestrator
+dsh plugin add .        # or add the directory to your plugin folder
 ```
 
-Restart DSH, open the **Local Scheduling** tab, then either import assets from a directory or add
-a single asset (UI "＋ Add asset", or just ask the agent to call
-`local_assets {"action":"add","asset":{"id":"my-qwen","gguf":"text/my-qwen/model.gguf"}}`).
+Restart DSH; a **Local Scheduling** tab appears.
 
-Verify end-to-end:
+### 2. Configure the environment once
+
+Everything under one root directory? One command derives every path:
+
+```bash
+npm run setup -- --base D:\models
+```
+
+The agent can do the same:
 
 ```jsonc
-// one chat call
-{"prompt":"hello"}
-// or a task, one step at a time
-{"action":"create","goal":"write a slogan","steps":[{"goal":"write a slogan","kind":"llm"}]}
-{"action":"run","taskId":"task-xxxx"}
+{"action":"set-base","dir":"D:\\models"}
+{"action":"doctor"}                  // ok / ! / x per item, each with one fix
+{"action":"vendor-llama"}            // copy llama.cpp into the plugin (~77 MB)
+{"action":"link-comfy","dir":"D:\\models\\ComfyUI"}
 ```
+
+All `[ok]` means you are good to go; any `[x]` tells you exactly what to do next.
+
+### 3. Register assets
+
+- **Import a directory**: Assets tab → "Import from directory";
+- **Add one**: Assets tab → "＋ Add asset";
+- **Ask the agent**: `local_assets {"action":"add","asset":{"id":"my-qwen","gguf":"text/my-qwen/model.gguf","ctx":8192}}`.
+
+### 4. Everyday calls
+
+```jsonc
+// chat (auto load / unload)
+local_chat {"prompt":"hello"}
+local_chat {"asset":"qwen36","prompt":"describe this","imagePath":"D:\\x.png"}
+
+// image / video / music
+local_generate {"prompt":"an orange cat on a windowsill","kind":"image"}
+local_generate {"asset":"minimax-h3-t2v","prompt":"night city aerial","kind":"video"}
+
+// multi-step task: pause/resume/recover
+local_task {"action":"create","goal":"write three slogans","steps":[{"goal":"write three slogans","kind":"llm"}]}
+local_step {"action":"run","taskId":"task-xxx"}
+
+// speech
+local_audio {"action":"tts","text":"hello from the local machine"}
+local_audio {"action":"asr","audioPath":"D:\\x.wav"}
+```
+
+### 5. Inspect
+
+Web tab: Overview (three-segment VRAM bar) / Task pool / Usage / Assets.
+Tools: `local_resources {"verbose":true}` shows compute, assets, 24 h usage and recent events.
+
+### 6. When something breaks
+
+```jsonc
+local_env {"action":"doctor"}
+```
+
+Every item is one line plus one action. Model path wrong, llama.cpp missing, ComfyUI not found —
+this is where you find out.
 
 ## Limitations (honest list)
 

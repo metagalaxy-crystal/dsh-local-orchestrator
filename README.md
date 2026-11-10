@@ -27,6 +27,96 @@ node scripts/bench.mjs
 npm run verify
 ```
 
+## 运行用法（5 分钟上手）
+
+### 1. 安装
+
+```bash
+git clone https://github.com/metagalaxy-crystal/dsh-local-orchestrator.git
+cd dsh-local-orchestrator
+dsh plugin add .        # 或以你本地 DSH 版本的方式把目录加进插件目录
+```
+
+重启 DSH，会话顶部会出现「本地调度」页签。
+
+### 2. 配环境（一次性）
+
+本机所有东西都在同一个目录下时，**一条命令**：
+
+```bash
+npm run setup -- --base D:\models
+```
+
+它会派生并写入 `models / llama.cpp / ComfyUI / scripts / output` 全部路径。也可以让 agent 做同一件事：
+
+```jsonc
+{"action":"set-base","dir":"D:\\models"}
+{"action":"doctor"}                    // 逐项 ok / ! / x，每条都带一条 fix
+{"action":"vendor-llama"}              // 把已有 llama.cpp 复制进插件（约 77MB）
+{"action":"link-comfy","dir":"D:\\models\\ComfyUI"}
+```
+
+> `doctor` 全 `[ok]` 就可以往下走；有 `[x]` 就照那一条 `→` 做，不要读日志猜。
+
+### 3. 登记资产
+
+- **目录导入**：资产页「从目录导入」（模型都在一个根目录下时最快）；
+- **手动加**：资产页「＋ 添加资产」；
+- **对话加**：
+
+```jsonc
+{"action":"add","asset":{"id":"my-qwen","kind":"llm","gguf":"text/my-qwen/model.gguf","ctx":8192}}
+{"action":"list"}                       // 能看到每个资产的「配套组件」与「⚠ 缺文件」
+```
+
+### 4. 四种日常用法
+
+**① 本地对话**（自动加载、用完可自动卸载）
+
+```jsonc
+local_chat {"prompt":"用一句话解释什么是显存预算"}
+local_chat {"asset":"qwen36","prompt":"看这张图里有什么","imagePath":"D:\\x.png"}
+```
+
+**② 出图 / 视频 / 音乐**
+
+```jsonc
+local_generate {"prompt":"一只橘猫在窗台上，写实照片","kind":"image"}
+local_generate {"asset":"minimax-h3-t2v","prompt":"夜景城市航拍","kind":"video"}
+local_generate {"prompt":"轻松的钢琴配乐","kind":"music"}
+```
+
+**③ 多步任务（可暂停、可恢复）**
+
+```jsonc
+local_task {"action":"create","goal":"给新品写三条文案并评估","steps":[
+  {"goal":"写三条文案","kind":"llm"},
+  {"goal":"按“是否具体、是否有卖点”评估上一步","kind":"evaluate","dependsOn":[0]}
+]}
+local_step {"action":"run","taskId":"task-xxx"}    // 一次推进一步
+local_task {"action":"pause","taskId":"task-xxx"}  // 中途暂停
+```
+
+**④ 语音 / 转写**
+
+```jsonc
+local_audio {"action":"tts","text":"你好，这是本地合成。"}
+local_audio {"action":"asr","audioPath":"D:\\x.wav"}
+```
+
+### 5. 看状态
+
+- **Web**：总览（显存三段条）/ 任务池（步骤树 + 租约）/ 用量（token 与上下文占用）/ 资产（框架条 + 组件）；
+- **工具**：`local_resources {"verbose":true}` 一眼看算力、资产、24h 用量、最近事件。
+
+### 6. 出问题先跑这条
+
+```jsonc
+local_env {"action":"doctor"}
+```
+
+每项一行结论 + 一条可执行的 fix。llama.cpp 起不来、ComfyUI 找不到、模型路径不对，都在这里定位。
+
 ## 三个核心物件
 
 | 物件 | 解决什么 | 在哪 |

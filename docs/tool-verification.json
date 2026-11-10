@@ -1,22 +1,22 @@
 {
   "pluginVersion": "0.14.1",
-  "updatedAt": "2026-11-10T07:16:42.605Z",
+  "updatedAt": "2026-11-10T07:25:53.727Z",
   "tools": {
     "local_resources": {
-      "status": "pending",
+      "status": "pass",
       "fingerprint": "sha256:c861a654c6c1d183",
-      "verifiedAt": "2026-11-07T06:18:11.496Z",
-      "evidence": "verbose 增加 24h 用量段",
-      "note": "重启后确认用量段",
-      "pluginVersion": "0.13.0"
+      "verifiedAt": "2026-11-10T07:25:53.727Z",
+      "evidence": "verbose 正常输出三段显存 + 39 个资产 + 核显说明",
+      "note": "",
+      "pluginVersion": "0.14.1"
     },
     "local_assets": {
-      "status": "pending",
+      "status": "pass",
       "fingerprint": "sha256:c7dc9545958fa7c4",
-      "verifiedAt": "2026-11-07T06:18:11.494Z",
-      "evidence": "execute 新增 action=add/update/remove 与 asset 描述归一",
-      "note": "重启后跑一次 add→list→remove 闭环再标 pass",
-      "pluginVersion": "0.13.0"
+      "verifiedAt": "2026-11-10T07:25:53.727Z",
+      "evidence": "add 缺文件资产时如实报“本地缺文件”；remove 成功删除",
+      "note": "",
+      "pluginVersion": "0.14.1"
     },
     "local_chat": {
       "status": "pass",
@@ -75,11 +75,11 @@
       "pluginVersion": "0.11.0"
     },
     "local_env": {
-      "status": "pending",
+      "status": "pass",
       "fingerprint": "sha256:7d3a5e86929d2586",
-      "verifiedAt": "2026-11-10T07:16:42.603Z",
-      "evidence": "底层函数已实测：doctor 真机 5 项全 ok；vendor-llama 复制 53 文件/77MB；复制出的 llama-server --version 可运行；set-base 派生出与 D:\\models 一致的路径",
-      "note": "工具壳（local_env）需宿主重启后才能调用，重启后跑一次 doctor 再标 pass",
+      "verifiedAt": "2026-11-10T07:25:53.725Z",
+      "evidence": "宿主内实测：doctor 6 项全 ok（base/runtime/llama 便携副本 77MB/ComfyUI/Python/models）；set-base D:\\models 派生路径与实机一致",
+      "note": "",
       "pluginVersion": "0.14.1"
     }
   }

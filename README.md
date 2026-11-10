@@ -278,7 +278,7 @@ UI 只提供两种（`config.decision.mode` 仍保留底层四值以兼容老配
 | `local_audio` | 一次性音频脚本：`tts` 语音合成 / `asr` 转写+分离+SRT / `music-qc` 音乐质检 |
 | `local_task` | 任务池：`create/list/get/pause/resume/cancel/rollback/replan`；任务按会话隔离、落盘可恢复 |
 | `local_step` | 推进任务一步：`run/retry/skip/inspect`；**一次调用只做一步**，失败自动重试一次 |
-| `local_env` | 便携运行时：`doctor` 环境体检（每项带一条 fix）、`plan` 还差什么、`vendor-llama` 把 llama.cpp 复制进插件、`link-comfy` 登记 ComfyUI 路径、`set-model-root` 改模型目录 |
+| `local_env` | 便携运行时：`doctor` 环境体检（每项带一条 fix）、`plan` 还差什么、`vendor-llama` 把 llama.cpp 复制进插件、`link-comfy` 登记 ComfyUI 路径、`set-model-root` 改模型目录、`set-base` 指一个基础目录自动派生全部路径 |
 
 ### 便携运行时（下载即用）
 

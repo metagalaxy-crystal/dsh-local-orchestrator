@@ -10,7 +10,7 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { doctor, plan, vendorLlama, linkComfy, runtimeDirOf } from '../lib/env.js'
+import { doctor, plan, vendorLlama, linkComfy, runtimeDirOf, pathsFromBase } from '../lib/env.js'
 import { resolveConfigSync, saveConfigPatch } from '../lib/config.js'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
@@ -32,6 +32,18 @@ for (const item of report.items) {
 const llamaDir = pick('--llama')
 const comfyDir = pick('--comfy')
 const modelsDir = pick('--models')
+const baseDir = pick('--base')
+
+if (baseDir) {
+  const derived = pathsFromBase(baseDir)
+  await saveConfigPatch(config, { paths: derived })
+  console.log(`\n基础目录已设为：${derived.base}`)
+  console.log(`  模型：${derived.modelsRoot}`)
+  console.log(`  llama.cpp：${derived.llamaServer}`)
+  console.log(`  ComfyUI：${derived.comfyDir}`)
+  console.log(`  脚本：${derived.comfyScripts}`)
+  console.log(`  输出：${derived.outputRoot}`)
+}
 
 if (llamaDir) {
   const out = await vendorLlama(config, { source: llamaDir, force: args.includes('--force') })

@@ -1,6 +1,6 @@
 {
   "name": "dsh-local-orchestrator",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "description": "单卡消费级设备上、给 agent 用的资源调度运行时：把 LLM / 生成式工作流 / 一次性脚本统一进一张预算表，用「单步工具 + 任务状态机」分离决策权与执行权，支持跨会话任务的暂停与唤醒。",
   "private": false,
   "type": "module",

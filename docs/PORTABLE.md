@@ -3,6 +3,28 @@
 目标：**不让人（和决策模型）为了「跑不起来」花时间 debug**。
 做法是把该由环境承担的东西收进插件目录，把太大的东西改成「只记路径」。
 
+## 一个基础目录就够了（推荐）
+
+所有东西都在同一个父目录下时（本项目就是 `D:\models`），只指一次：
+
+```
+local_env {"action":"set-base","dir":"D:\\models"}
+```
+
+自动派生出：
+
+| 路径 | 值 |
+|---|---|
+| `modelsRoot` | `D:\models\models`（GGUF） |
+| `llamaDir` / `llamaServer` | `D:\models\llama.cpp` / `…\build\bin\Release\llama-server.exe` |
+| `comfyDir` | `D:\models\ComfyUI` |
+| `comfyScripts` | `D:\models\scripts\comfyui` |
+| `registry` | `D:\models\scripts\llama_cpp\models.json` |
+| `outputRoot` | `D:\models\output` |
+
+没配 `base` 时 `doctor` 会由 `modelsRoot` 反推（`dirname`），所以老配置不用改也能显示。
+模型散落在多个盘时，就别用 `set-base`，逐个 `add` 资产 + `set-model-root` 更合适。
+
 ## 目录约定
 
 ```

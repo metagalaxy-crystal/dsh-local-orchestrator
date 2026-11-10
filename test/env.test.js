@@ -9,7 +9,7 @@ import os from 'node:os'
 import path from 'node:path'
 import fsp from 'node:fs/promises'
 
-import { doctor, vendorLlama, linkComfy, resolveComfyDir, resolveLlamaServer, runtimeDirOf } from '../lib/env.js'
+import { doctor, vendorLlama, linkComfy, resolveComfyDir, resolveLlamaServer, runtimeDirOf, pathsFromBase, baseDirOf } from '../lib/env.js'
 
 async function makeWorkspace() {
   const base = await fsp.mkdtemp(path.join(os.tmpdir(), 'dsh-lo-env-'))
@@ -98,4 +98,34 @@ test('doctor：模型目录不存在时报 error，并指向 set-model-root', as
   const models = report.items.find((item) => item.id === 'models')
   assert.equal(models.level, 'error')
   assert.match(models.fix, /set-model-root/)
+})
+
+test('pathsFromBase：一个基础目录推导出全部路径（D:\\models 的布局）', () => {
+  const derived = pathsFromBase('D:/models')
+  assert.equal(derived.base, path.resolve('D:/models'))
+  assert.equal(derived.modelsRoot, path.join(path.resolve('D:/models'), 'models'))
+  assert.equal(derived.comfyDir, path.join(path.resolve('D:/models'), 'ComfyUI'))
+  assert.equal(derived.comfyScripts, path.join(path.resolve('D:/models'), 'scripts', 'comfyui'))
+  assert.equal(derived.outputRoot, path.join(path.resolve('D:/models'), 'output'))
+  assert.match(derived.llamaServer, /llama-server(\.exe)?$/)
+  assert.ok(derived.llamaServer.includes('llama.cpp'))
+})
+
+test('baseDirOf：没配 base 时从 modelsRoot 反推', () => {
+  assert.equal(baseDirOf({ paths: { modelsRoot: 'D:/models/models' } }), path.resolve('D:/models'))
+  assert.equal(baseDirOf({ paths: { base: 'E:/ai', modelsRoot: 'D:/models/models' } }), path.resolve('E:/ai'))
+  assert.equal(baseDirOf({ paths: {} }), '')
+})
+
+test('doctor：基础目录存在时 ok，不存在时 error + set-base', async () => {
+  const { base, config } = await makeWorkspace()
+  const okReport = await doctor({ paths: { ...config.paths, base } })
+  const okItem = okReport.items.find((item) => item.id === 'base')
+  assert.equal(okItem.level, 'ok')
+  assert.match(okItem.detail, /ComfyUI|models/)
+
+  const badReport = await doctor({ paths: { ...config.paths, base: path.join(os.tmpdir(), 'no-such-base') } })
+  const badItem = badReport.items.find((item) => item.id === 'base')
+  assert.equal(badItem.level, 'error')
+  assert.match(badItem.fix, /set-base/)
 })

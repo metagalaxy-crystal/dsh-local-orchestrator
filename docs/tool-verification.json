@@ -1,6 +1,6 @@
 {
-  "pluginVersion": "0.13.0",
-  "updatedAt": "2026-11-07T06:18:11.496Z",
+  "pluginVersion": "0.14.1",
+  "updatedAt": "2026-11-10T07:16:42.605Z",
   "tools": {
     "local_resources": {
       "status": "pending",
@@ -73,6 +73,14 @@
       "evidence": "1.1s，minicpmv，124 tokens，direct 策略",
       "note": "",
       "pluginVersion": "0.11.0"
+    },
+    "local_env": {
+      "status": "pending",
+      "fingerprint": "sha256:7d3a5e86929d2586",
+      "verifiedAt": "2026-11-10T07:16:42.603Z",
+      "evidence": "底层函数已实测：doctor 真机 5 项全 ok；vendor-llama 复制 53 文件/77MB；复制出的 llama-server --version 可运行；set-base 派生出与 D:\\models 一致的路径",
+      "note": "工具壳（local_env）需宿主重启后才能调用，重启后跑一次 doctor 再标 pass",
+      "pluginVersion": "0.14.1"
     }
   }
 }
